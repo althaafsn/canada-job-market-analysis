@@ -1,0 +1,24 @@
+# Data files (raw datasets excluded from GitHub)
+data/
+*.csv
+*.zip
+*.tar.gz
+*.tsv
+
+# Python & Environments
+.venv
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
