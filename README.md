@@ -6,12 +6,15 @@ An ordered record of an exploratory Canadian job-market study. The aim is to und
 
 | Stage | Work | Status |
 | --- | --- | --- |
-| 01 | Indeed posting indices: sector trends, regional trends, correlations, and new/total index ratios | Analysis complete; see [summary](ANALYSIS_SUMMARY.md) |
-| 02 | Download Job Bank posting records and Statistics Canada occupation vacancy estimates | Data acquired; analysis awaits instructions |
+| 01 | Indeed posting indices: sector trends, regional trends, correlations, and new/total index ratios | Complete; see [summary](ANALYSIS_SUMMARY.md) |
+| 02 | Job Bank technical occupations: multi-year trajectories, continuous 7-day rolling inflow, and compensation benchmarks | Complete; see [job_bank_tech_roles.ipynb](data_analysis/02_job_bank/job_bank_tech_roles.ipynb) |
+| 03 | Post-Claude Code era analysis: source coverage, multi-snapshot deduplication, season-matched comparison (Feb–Jul), and AI market impact | Complete; see [post_claude_code_job_analysis.ipynb](data_analysis/03_post_claude_code/post_claude_code_job_analysis.ipynb) |
 
 ```text
 data_analysis/
   01_posting_indices/       # Two notebooks and eight saved plots
+  02_job_bank/              # Job Bank 2023–2026 microdata analysis and six saved plots
+  03_post_claude_code/      # Post-Claude Code era analysis and eight saved plots
 data_extraction/
   download.py              # Download and verify sources
   sources.json             # Source URLs and snapshot checksums
