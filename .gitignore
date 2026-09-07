@@ -1,24 +1,19 @@
-# Data files (raw datasets excluded from GitHub)
-data/
+/data/*
+!/data/README.md
+.venv
+.vscode/
+__pycache__/
+.ipynb_checkpoints/
+.env
+.env.*
+/job_search.md
 *.csv
+*.tsv
 *.zip
 *.tar.gz
-*.tsv
-
-# Python & Environments
-.venv
-.venv/
+*.py[cod]
 venv/
 env/
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Jupyter
-.ipynb_checkpoints/
-
-# IDE & OS
-.vscode/
 .idea/
 .DS_Store
 Thumbs.db

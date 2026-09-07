@@ -1,101 +1,59 @@
-# Canada Job Market & Tech Postings Analysis (2020–2026)
+# Canadian job-market analysis
 
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+An ordered record of an exploratory Canadian job-market study. The aim is to understand posting trends, then investigate actual advertised jobs and vacancy estimates by occupation and province.
 
-Empirical data analysis of labor demand, hiring velocity, and regional tech market co-movement across Canada covering **February 2020 through August 2026** (360,000+ data points across 47 industries and 45 metropolitan areas).
+## Study sequence
 
----
-
-## 📌 Core Research Question
-> *"Which software/tech job family and Canadian market offers the strongest combination of accessible openings, hiring velocity, and economic resilience?"*
-
----
-
-## 🔍 Key Findings
-
-### 1. The Regional Divergence: Alberta vs. Ontario & BC
-* **Alberta and the Prairies** are currently the strongest labor markets in Canada (**Calgary: 136.2**, **Edmonton: 138.2**, **Lethbridge: 161.9** vs. Feb 2020 baseline of 100).
-* **Core Tech Metros in Ontario and BC** suffered the deepest post-2022 hiring contractions: **Vancouver (77.3)**, **Ottawa (79.4)**, **Kitchener-Waterloo-Cambridge (80.0)**, and **Toronto (83.5)** sit in the **bottom 10 out of all 45 Canadian metropolitan areas**.
-
-![Metro Tech Hubs Trajectory](plots/metro_tech_hubs_trajectory.png)
-
-### 2. Hiring Velocity: Fresh Inflow vs. Stale Postings
-By measuring the **Hiring Velocity Ratio** ($\text{VR} = \frac{\text{New Postings Index}}{\text{Total Postings Index}}$):
-* **Data & Analytics ($\text{VR} = 1.132$, New Index = $102.8$)** is the #1 performing software/data discipline in Canada. Fresh job requisitions are entering above the pre-pandemic baseline.
-* **Software Development ($\text{VR} = 1.020$, New Index = $72.6$)** has contracted into a sluggish inflow regime where existing postings linger longer on job boards before being replaced.
-* **Electrical & STEM Engineering ($\text{VR} = 1.283$, Total Index = $160.8$)** shows surging industrial demand.
-
-![Hiring Velocity Tracking](plots/hiring_velocity_tracking.png)
-
-### 3. Sector Breakdown & Velocity Rankings
-Comparing stock (total active listings) vs. flow (new listings added in the last 7 days):
-
-![Tech Industry Velocity Comparison](plots/tech_industry_velocity_comparison.png)
-
-### 4. Provincial Co-Movement with Tech Hiring
-Correlations with national Software Development demand:
-* **Ontario ($r = 0.863$)**, **British Columbia ($r = 0.807$)**, and **Quebec ($r = 0.803$)** have the strongest co-movement with the tech cycle.
-* **Alberta ($r = 0.542$)** is largely decoupled, operating on an independent energy and engineering cycle.
-
-![Tech Province Correlation](plots/tech_province_correlation.png)
-
----
-
-## 📂 Repository Structure
+| Stage | Work | Status |
+| --- | --- | --- |
+| 01 | Indeed posting indices: sector trends, regional trends, correlations, and new/total index ratios | Analysis complete; see [summary](ANALYSIS_SUMMARY.md) |
+| 02 | Download Job Bank posting records and Statistics Canada occupation vacancy estimates | Data acquired; analysis awaits instructions |
 
 ```text
-├── data_analysis.ipynb          # Sector trends, provincial correlation & velocity analysis
-├── metro_job_analysis.ipynb     # 45 Canadian CMAs, tech hub trajectories & YoY growth
-├── plots/                       # High-resolution exported figures
-│   ├── hiring_velocity_tracking.png
-│   ├── metro_tech_hubs_trajectory.png
-│   ├── metro_top_bottom_rankings.png
-│   ├── metro_yoy_growth.png
-│   ├── metro_provincial_distribution.png
-│   ├── tech_industry_velocity_comparison.png
-│   ├── tech_province_correlation.png
-│   └── tech_sectors_trends.png
-├── ANALYSIS_SUMMARY.md          # Comprehensive data analysis notes & methodology
-├── job_search.md                # Strategic 2-hour decision framework & hypotheses
-├── requirements.txt             # Python dependencies
-└── .gitignore                   # Excludes raw data dumps and environment files
+data_analysis/
+  01_posting_indices/       # Two notebooks and eight saved plots
+data_extraction/
+  download.py              # Download and verify sources
+  sources.json             # Source URLs and snapshot checksums
+  README.md                # Extraction stages and source details
+data/                      # Local datasets; excluded from Git
+ANALYSIS_SUMMARY.md         # Findings and limits of stage 01
+requirements.txt
 ```
 
----
+## Run from a fresh clone
 
-## 📊 Data Note
-
-Raw data files are deliberately excluded from this repository in accordance with open-data practices:
-* The primary datasets derive from the **Indeed Hiring Lab Open Data Index** (February 2020 = 100).
-* Complementary datasets include **Job Bank Canada Open Data** and **Statistics Canada Table 14-10-0444-01**.
-* To run the notebooks, place the CSV files into a local `data/` directory.
-
----
-
-## 🚀 Quickstart
-
-### 1. Clone the repository
 ```bash
 git clone https://github.com/althaafsn/canada-job-market-analysis.git
 cd canada-job-market-analysis
 ```
 
-### 2. Create a virtual environment & install dependencies
+Requires Python 3.11 or later and several GB of free disk space for the full data collection. Run these commands from the repository root:
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
+python data_extraction/download.py --stage 01
+jupyter lab
 ```
 
-### 3. Register the Jupyter kernel & launch
+Open `data_analysis/01_posting_indices/data_analysis.ipynb`, then `metro_job_analysis.ipynb`, and run their cells in order. The setup cell finds the repository root from either the notebook folder or root. The notebooks recreate the plots in their stage folder.
+
+To acquire stage 02 data, without running a new analysis:
+
 ```bash
-python -m ipykernel install --user --name canada_job_analysis --display-name "Python (Job Analysis)"
-jupyter lab  # or jupyter notebook
+python data_extraction/download.py --stage 02
 ```
-Open `data_analysis.ipynb` or `metro_job_analysis.ipynb` and select the **Python (Job Analysis)** kernel.
 
----
+Use `--stage all` to download both stages. Downloads need no API key and use only the Python standard library. Existing files are checked against the source manifest and reused. A differing file is preserved and reported as an error. Partial downloads use a temporary file and are not treated as complete.
 
-## 📄 License
-This project is open-source under the [MIT License](LICENSE).
+## Reproducibility and interpretation
+
+The source manifest records the snapshots used in this study. Indeed URLs are pinned to a Git revision. Government download URLs can be revised; checksums detect changes and stop the download rather than silently replace the recorded snapshot. If a provider removes or revises a snapshot, exact reproduction needs that original source file. Government data are not archived in this repository.
+
+The first analysis describes data through August 28, 2026. Its new/total ratio compares two indices: it does not measure hiring speed or prove that jobs are stale. See the summary for other limitations. Job Bank records and Statistics Canada survey estimates measure different things and must not be added together.
+
+Raw datasets, local environments, editor settings, and personal planning notes are excluded from Git. Notebook results and plots are retained for reading without downloading data. Data remain subject to their publishers' licences; see [source details](data_extraction/README.md).
+
+Project code is covered by the existing [MIT licence](LICENSE).
